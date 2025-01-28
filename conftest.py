@@ -13,16 +13,6 @@ user = {
     'weight': 100.9
 }
 
-invalid_user = {
-    'education': 'Unrevealed',
-    'height': 166,
-    'identity': 'Business',
-    'name': 'Jack',
-    'other_aliases': 'Black',
-    'universe': 'Marvel',
-    'weight': 100.9
-}
-
 
 @pytest.fixture
 def characters_api(request):
@@ -36,12 +26,6 @@ def characters_api(request):
 @pytest.fixture
 def prepare_user():
     return user
-
-
-@allure.step("Подготовка невалидного тестового пользователя")
-@pytest.fixture
-def defected_user():
-    return invalid_user
 
 
 @pytest.fixture(autouse=True)
