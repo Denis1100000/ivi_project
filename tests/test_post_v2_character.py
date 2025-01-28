@@ -12,11 +12,14 @@ def test_post_v2_character(characters_api, prepare_user):
 @allure.severity(allure.severity_level.NORMAL)
 @allure.title("Проверка заполнения базы, ограничение в 500 персонажей")
 def test_post_many_characters(characters_api, prepare_user):
-    characters_collection = 500 - len(get_characters_list(characters_api))
-    for i in range(characters_collection):
-        create_new_character(characters_api, generate_random_user(), status_code=200)
-    response = create_new_character(characters_api, prepare_user, status_code=400)
-    assert response.json()['error'] == "Collection can't contain more than 500 items"
+    with allure.step("Проверка текущего количества персонажей в БД"):
+        characters_collection = 500 - len(get_characters_list(characters_api))
+    with allure.step("Заполнение БД до пограничного значения (500)"):
+        for i in range(characters_collection):
+            create_new_character(characters_api, generate_random_user(), status_code=200)
+    with allure.step("Создание 501 персонажа"):
+        response = create_new_character(characters_api, prepare_user, status_code=400)
+        assert response.json()['error'] == "Collection can't contain more than 500 items"
 
 
 @allure.severity(allure.severity_level.NORMAL)
