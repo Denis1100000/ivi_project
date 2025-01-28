@@ -1,4 +1,5 @@
 from helpers import create_new_character, get_characters_list, generate_random_user
+import copy
 import allure
 
 
@@ -24,7 +25,8 @@ def test_post_many_characters(characters_api, prepare_user):
 
 @allure.severity(allure.severity_level.NORMAL)
 @allure.title("Проверка на пропуск и неправильный тип данных при создании персонажа")
-def test_post_missing_data_request(characters_api, defected_user):
+def test_post_missing_data_request(characters_api, prepare_user):
+    defected_user = copy.copy(prepare_user)
     del defected_user['name']
     defected_user['weight'] = "hello"
     invalid_user = create_new_character(characters_api, defected_user, status_code=400)
